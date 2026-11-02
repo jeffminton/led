@@ -95,6 +95,7 @@ void ezLED::turnON(unsigned long delayTime) {
 void ezLED::turnOFF(unsigned long delayTime) {
 	_delayTime = delayTime;
 	_ledMode   = LED_MODE_OFF;
+	_breathe = false;
 
 	if(delayTime > 0) {
 		_ledState  = LED_STATE_DELAY;
@@ -137,6 +138,15 @@ void ezLED::fade(int fadeFrom, int fadeTo, unsigned long fadeTime, unsigned long
 
 	loop();
 }
+
+
+
+void ezLED::breathe(int fadeFrom, int fadeTo, unsigned long fadeTime, unsigned long delayTime) {
+	_breathe = true;
+	fade(fadeFrom, fadeTo, fadeTime, delayTime);
+}
+
+
 
 void ezLED::blink(unsigned long onTime, unsigned long offTime, unsigned long delayTime) {
 	setBlink(onTime, offTime, delayTime);
@@ -272,6 +282,11 @@ void ezLED::loop(void) {
 			if((millis() - _lastTime) <= _fadeTime) {
 				unsigned long progress = millis() - _lastTime;
 				_brightness = map(progress, 0, _fadeTime, _fadeFrom, _fadeTo);
+			} else if (_breathe == true) {
+				_fadeValBuffer = _fadeFrom;
+				_fadeFrom = _fadeTo;
+				_fadeTo = _fadeValBuffer;
+				_lastTime = millis();
 			} else {
 				_ledState = LED_STATE_IDLE;
 				_outputState = LED_OFF;

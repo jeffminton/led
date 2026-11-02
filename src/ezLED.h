@@ -71,6 +71,7 @@ class ezLED
 
 		unsigned char _fadeFrom = 0;
 		unsigned char _fadeTo = 0;
+		unsigned char _fadeValBuffer = 0;
 		unsigned long _fadeTime;
 		unsigned long _blinkOnTime;
 		unsigned long _blinkOffTime;
@@ -80,6 +81,7 @@ class ezLED
 		unsigned long _lastTime;
 		unsigned long _blinkTimer;
 		unsigned int  _blinkCounter;
+		bool _breathe;
 
 		void setBlink(unsigned long onTime, unsigned long offTime, unsigned long delayTime);
 		void updateAnalog();
@@ -92,6 +94,8 @@ class ezLED
 		void toggle(unsigned long delayTime = 0);
 
 		void fade(int fadeFrom, int fadeTo, unsigned long fadeTime, unsigned long delayTime = 0);
+
+		void breathe(int fadeFrom, int fadeTo, unsigned long fadeTime, unsigned long delayTime = 0);
 
 		void blink(unsigned long onTime, unsigned long offTime, unsigned long delayTime = 0);
 		void blinkInPeriod(unsigned long onTime, unsigned long offTime, unsigned long blinkTime, unsigned long delayTime = 0);
